@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KNL 리그 - 공식 홈페이지</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#">
+        <!-- 간단한 SVG 로고 -->
+        <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="48" fill="#0b5" />
+          <text x="50%" y="54%" text-anchor="middle" font-size="42" fill="#012">KNL</text>
+        </svg>
+        <span class="league-name">KNL 리그</span>
+      </a>
+      <nav class="main-nav">
+        <a href="#news">뉴스</a>
+        <a href="#scoreboard">경기</a>
+        <a href="#standings">순위</a>
+        <a href="#teams">팀</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="scoreboard" class="scoreboard">
+      <h2>실시간 경기 상황</h2>
+      <div id="games" class="games-grid">
+        <!-- 경기 카드 JS로 채움 -->
+      </div>
+    </section>
+
+    <section id="standings" class="standings">
+      <h2>순위</h2>
+      <div class="table-wrap">
+        <table id="standings-table" cellspacing="0">
+          <thead>
+            <tr>
+              <th>순위</th>
+              <th>팀</th>
+              <th>승</th>
+              <th>패</th>
+              <th>무</th>
+              <th>승률</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS로 채움 -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="schedule" class="schedule">
+      <h2>오늘의 경기</h2>
+      <ul id="today-schedule" class="schedule-list">
+        <!-- JS로 채움 -->
+      </ul>
+    </section>
+
+    <section id="news" class="news">
+      <h2>뉴스</h2>
+      <div id="news-carousel" class="carousel">
+        <!-- JS로 채움 -->
+      </div>
+    </section>
+
+    <section id="teams" class="teams">
+      <h2>팀 소개</h2>
+      <div class="teams-grid" id="teams-grid">
+        <!-- 예시 팀 카드 JS로 채움 -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="year"></span> KNL 리그. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
