@@ -12,15 +12,23 @@
 html,body{height:100%;margin:0;font-family:Inter,system-ui,Apple SD Gothic Neo,"Noto Sans KR",sans-serif;background:var(--bg);color:#111}
 .container{max-width:var(--max-width);margin:0 auto;padding:0 16px}
 
-.site-header{background:linear-gradient(90deg,var(--primary),#106b3f);color:#fff;padding:12px 0;box-shadow:0 2px 6px rgba(0,0,0,0.06);position:relative}
+/* Header: changed to white background with subtle gray border and dark text */
+.site-header{
+  background:#fff; /* was green gradient */
+  color:#111;      /* text color changed to black */
+  padding:12px 0;
+  border-bottom:1px solid rgba(0,0,0,0.06); /* subtle gray outline */
+  box-shadow:none; /* remove strong shadow to keep flat white look */
+  position:relative
+}
 .header-inner{display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}
-.logo .league-name{font-weight:700;font-size:1.1rem}
+.logo .league-name{font-weight:700;font-size:1.1rem;color:#111}
 
 /* main nav as a horizontal list */
 .main-nav ul{list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:18px}
-.main-nav a{color:rgba(255,255,255,0.95);text-decoration:none;font-weight:600;padding:6px 8px;display:inline-block}
-.main-nav a:hover{opacity:0.9}
+.main-nav a{color:#111;text-decoration:none;font-weight:600;padding:6px 8px;display:inline-block}
+.main-nav a:hover{opacity:0.9;color:var(--primary)}
 
 /* dropdown container */
 .main-nav .has-dropdown{position:relative}
@@ -32,7 +40,8 @@ html,body{height:100%;margin:0;font-family:Inter,system-ui,Apple SD Gothic Neo,"
   background:#fff;
   color:#111;
   border-radius:4px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.12);
+  border:1px solid rgba(0,0,0,0.08); /* light gray border instead of heavy shadow */
+  box-shadow:none;
   padding:6px 0;
   display:none;
   z-index:1200;
