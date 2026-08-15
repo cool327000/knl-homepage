@@ -1,3 +1,4 @@
+/* --- existing styles (kept) --- */
 :root{
   --primary:#0b5d2e; /* KBO 계열 녹색 계열 예시 */
   --accent:#f4b400;
@@ -83,7 +84,41 @@ tbody tr:hover{background:rgba(11,93,46,0.03)}
 /* footer */
 .site-footer{padding:18px 0;text-align:center;color:var(--muted);font-size:0.95rem;background:transparent;border-top:1px solid rgba(0,0,0,0.04)}
 
-/* responsive tweaks */
+/* schedule page specific styles */
+.page-wrap{display:flex;gap:24px;padding-top:18px}
+.page-sidebar{width:220px;background:transparent}
+.page-sidebar .side-title{font-weight:800;margin-bottom:12px}
+.side-menu{background:#fff;padding:12px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.side-menu a{display:block;padding:8px 10px;color:#222;text-decoration:none;border-left:3px solid transparent}
+.side-menu a.active{font-weight:800;border-left-color:var(--primary);background:linear-gradient(90deg, rgba(11,93,46,0.03), transparent)}
+
+.page-content{flex:1}
+.page-title{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.page-title h1{margin:0;font-size:1.6rem}
+.tabs{display:flex;border-bottom:2px solid #e6e6e6;margin-top:18px}
+.tab{padding:12px 18px;font-weight:800;background:#fff;border-top-left-radius:4px;border-top-right-radius:4px}
+.tab.active{border-bottom:3px solid #0e3a6b;color:#0e3a6b}
+
+.controls{display:flex;align-items:center;gap:8px;margin:14px 0}
+.controls select{padding:6px 8px;border:1px solid #dcdcdc;border-radius:4px}
+
+.schedule-filters{background:#fff;padding:10px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.04);margin-bottom:12px}
+.team-strip{display:flex;gap:8px;align-items:center;padding:8px;border-top:1px solid #f1f1f1}
+.team-strip .team-icon{width:34px;height:22px;background:#eee;border-radius:3px;display:inline-block}
+
+.schedule-table{width:100%;border-collapse:collapse;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.schedule-table th, .schedule-table td{padding:10px 12px;border-bottom:1px solid #efefef;text-align:left}
+.schedule-table thead th{background:#f8f8fb;font-weight:800}
+.schedule-table .time{width:90px}
+.schedule-table .teams-col{width:260px}
+.schedule-table .highlight{color:#c33;font-weight:800}
+
+/* responsive */
+@media (max-width:920px){
+  .page-wrap{flex-direction:column}
+  .page-sidebar{width:100%}
+}
+
 @media (max-width:640px){
   .main-nav{display:none}
   .header-inner{justify-content:space-between}
