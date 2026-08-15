@@ -15,22 +15,45 @@ html,body{height:100%;margin:0;font-family:Inter,system-ui,Apple SD Gothic Neo,"
 .header-inner{display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}
 .logo .league-name{font-weight:700;font-size:1.1rem}
-.main-nav a{color:rgba(255,255,255,0.95);text-decoration:none;margin-left:18px;font-weight:600}
+
+/* main nav as a horizontal list */
+.main-nav ul{list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:18px}
+.main-nav a{color:rgba(255,255,255,0.95);text-decoration:none;font-weight:600;padding:6px 8px;display:inline-block}
 .main-nav a:hover{opacity:0.9}
 
-/* 로고 배지 (왼쪽 상단 둥근 원 안에 이미지) */
-.logo-badge{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  background: #ffffff22; /* 반투명 흰색으로 배경 유지 */
-  padding:6px;
-  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.06);
+/* dropdown container */
+.main-nav .has-dropdown{position:relative}
+.main-nav .dropdown{
+  position:absolute;
+  left:0;
+  top:calc(100% + 8px);
+  min-width:180px;
+  background:#fff;
+  color:#111;
+  border-radius:4px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.12);
+  padding:6px 0;
+  display:none;
+  z-index:1200;
 }
-.logo-img{width:36px;height:36px;display:block}
+.main-nav .dropdown li{list-style:none}
+.main-nav .dropdown a{display:block;padding:8px 14px;color:#222;text-decoration:none;font-weight:700}
+.main-nav .dropdown a:hover{background:#f4f4f6}
+
+/* show on hover or keyboard focus */
+.main-nav .has-dropdown:hover .dropdown,
+.main-nav .has-dropdown:focus-within .dropdown{display:block}
+
+/* small divider line like in the screenshot (thin top border) */
+.main-nav .dropdown::before{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:-8px;
+  height:8px;
+  background:transparent;
+}
 
 main.container{padding:28px 16px 60px}
 section{margin-bottom:28px}
