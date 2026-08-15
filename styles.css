@@ -21,11 +21,14 @@ html,body{height:100%;margin:0;font-family:Inter,system-ui,Apple SD Gothic Neo,"
   box-shadow:none; /* remove strong shadow to keep flat white look */
   position:relative
 }
-.header-inner{display:flex;align-items:center;justify-content:space-between}
+/* make header-inner a positioned container so we can center the nav */
+.header-inner{display:flex;align-items:center;justify-content:space-between;position:relative}
 .logo{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}
 .logo .league-name{font-weight:700;font-size:1.1rem;color:#111}
 
 /* main nav as a horizontal list */
+/* center the nav horizontally in the header */
+.main-nav{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10}
 .main-nav ul{list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:18px}
 .main-nav a{color:#111;text-decoration:none;font-weight:600;padding:6px 8px;display:inline-block}
 .main-nav a:hover{opacity:0.9;color:var(--primary)}
