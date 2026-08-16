@@ -99,6 +99,14 @@ tbody tr:hover{background:rgba(11,93,46,0.03)}
 
 .schedule-table .highlight{color:#c33;font-weight:800}
 
+/* TV / 라디오 열 숨김 */
+.schedule-table th:nth-child(6),
+.schedule-table td:nth-child(6),
+.schedule-table th:nth-child(7),
+.schedule-table td:nth-child(7){
+  display:none;
+}
+
 @media (max-width:920px){
   .page-wrap{flex-direction:column}
   .page-sidebar{width:100%}
