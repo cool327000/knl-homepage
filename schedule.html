@@ -9,22 +9,11 @@
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="index.html">
-        <span class="league-name">KNL 리그</span>
-      </a>
+      <a class="logo" href="index.html"><span class="league-name">KNL 리그</span></a>
       <nav class="main-nav" aria-label="주요 네비게이션">
         <ul>
-          <li class="has-dropdown">
-            <a href="schedule.html" aria-haspopup="true">일정 · 결과</a>
-            <ul class="dropdown" role="menu">
-              <li role="none"><a role="menuitem" href="schedule.html">경기일정 · 결과</a></li>
-              <li role="none"><a role="menuitem" href="#game-center">게임센터</a></li>
-              <li role="none"><a role="menuitem" href="#scoreboard">스코어보드</a></li>
-            </ul>
-          </li>
-          <li><a href="#standings">순위</a></li>
-          <li><a href="#news">뉴스</a></li>
-          <li><a href="#teams">팀</a></li>
+          <li class="has-dropdown"><a href="schedule.html" aria-haspopup="true">일정 · 결과</a><ul class="dropdown" role="menu"><li role="none"><a role="menuitem" href="schedule.html">경기일정 · 결과</a></li><li role="none"><a role="menuitem" href="#game-center">게임센터</a></li><li role="none"><a role="menuitem" href="#scoreboard">스코어보드</a></li></ul></li>
+          <li><a href="#standings">순위</a></li><li><a href="#news">뉴스</a></li><li><a href="#teams">팀</a></li>
         </ul>
       </nav>
     </div>
@@ -33,116 +22,37 @@
   <main class="container page-wrap">
     <aside class="page-sidebar">
       <div class="side-title">일정 · 결과</div>
-      <nav class="side-menu" aria-label="일정 메뉴">
-        <a href="schedule.html" class="active">경기일정 · 결과</a>
-        <a href="#game-center">게임센터</a>
-        <a href="#scoreboard">스코어보드</a>
-      </nav>
+      <nav class="side-menu" aria-label="일정 메뉴"><a href="schedule.html" class="active">경기일정 · 결과</a><a href="#game-center">게임센터</a><a href="#scoreboard">스코어보드</a></nav>
     </aside>
 
     <section class="page-content">
-      <div class="page-title">
-        <h1>경기일정 · 결과</h1>
-        <div class="breadcrumb">홈 &gt; 일정 · 결과 &gt; 경기일정 · 결과</div>
-      </div>
-
-      <div class="tabs" role="tablist" aria-label="보기 옵션">
-        <div class="tab active" role="tab">리스트</div>
-        <div class="tab" role="tab">달력</div>
-      </div>
-
-      <div class="controls">
-        <button aria-label="이전 달">&lt;</button>
-        <select aria-label="연도 선택">
-          <option>2026</option>
-          <option>2025</option>
-        </select>
-        <select aria-label="월 선택">
-          <option>08</option>
-          <option>07</option>
-        </select>
-        <button aria-label="다음 달">&gt;</button>
-
-        <div style="flex:1"></div>
-        <select aria-label="일정 유형">
-          <option>KBO 정규시즌 일정</option>
-          <option>기타 대회</option>
-        </select>
-      </div>
-
-      <!-- team-strip removed per user request -->
+      <div class="page-title"><h1>경기일정 · 결과</h1><div class="breadcrumb">홈 &gt; 일정 · 결과 &gt; 경기일정 · 결과</div></div>
+      <div class="tabs" role="tablist" aria-label="보기 옵션"><div class="tab active" role="tab">리스트</div><div class="tab" role="tab">달력</div></div>
+      <div class="controls"><button aria-label="이전 달">&lt;</button><select aria-label="연도 선택"><option>2026</option><option>2025</option></select><select aria-label="월 선택"><option>08</option><option>07</option></select><button aria-label="다음 달">&gt;</button><div style="flex:1"></div><select aria-label="일정 유형"><option>KBO 정규시즌 일정</option><option>기타 대회</option></select></div>
 
       <table class="schedule-table" aria-describedby="schedule-list">
-        <thead>
-          <tr>
-            <th>날짜</th>
-            <th class="time">시간</th>
-            <th class="teams-col">경기</th>
-            <th>게임센터</th>
-            <th>하이라이트</th>
-            <th>TV</th>
-            <th>라디오</th>
-            <th>구장</th>
-            <th>비고</th>
-          </tr>
-        </thead>
+        <thead><tr><th>날짜</th><th class="time">시간</th><th class="teams-col">경기</th><th>게임센터</th><th>하이라이트</th><th>TV</th><th>라디오</th><th>구장</th><th>비고</th></tr></thead>
         <tbody>
-          <!-- Updated results: removed result-note text from 08.14 and 08.15 -->
-
-          <tr>
-            <td>08.14(금)</td>
-            <td class="time">20:30</td>
-            <td class="teams-col"><strong>키움</strong> 6 vs 0 <strong>양키스</strong></td>
-            <td><button>리뷰</button></td>
-            <td><button>하이라이트</button></td>
-            <td>KNL-T</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-
-          <tr>
-            <td>08.15(토)</td>
-            <td class="time">15:00</td>
-            <td class="teams-col"><strong>양키스</strong> 0 vs 1 <strong>키움</strong></td>
-            <td><button>리뷰</button></td>
-            <td><button>하이라이트</button></td>
-            <td>KNL-T</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-
-          <tr><td>08.16(일)</td><td class="time">15:00</td><td class="teams-col"><strong>키움</strong><span> vs </span><strong>양키스</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
+          <tr><td>08.14(금)</td><td class="time">20:30</td><td class="teams-col"><strong>키움</strong> 6 vs 0 <strong>양키스</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
+          <tr><td>08.15(토)</td><td class="time">15:00</td><td class="teams-col"><strong>양키스</strong> 0 vs 1 <strong>키움</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
+          <tr><td>08.16(일)</td><td class="time">15:00</td><td class="teams-col"><strong>키움</strong> 5 vs 4 <strong>양키스</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
           <tr><td>08.18(화)</td><td class="time">20:00</td><td class="teams-col"><strong>양키스</strong><span> vs </span><strong>키움</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
           <tr><td>08.19(수)</td><td class="time">20:00</td><td class="teams-col"><strong>키움</strong><span> vs </span><strong>양키스</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
           <tr><td>08.21(금)</td><td class="time">20:30</td><td class="teams-col"><strong>양키스</strong><span> vs </span><strong>키움</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
-
           <tr><td>08.22(토)</td><td class="time">15:00</td><td class="teams-col"><strong>키움</strong><span> vs </span><strong>양키스</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
           <tr><td>08.23(일)</td><td class="time">15:00</td><td class="teams-col"><strong>양키스</strong><span> vs </span><strong>키움</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
           <tr><td>08.25(화)</td><td class="time">20:00</td><td class="teams-col"><strong>키움</strong><span> vs </span><strong>양키스</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
           <tr><td>08.26(수)</td><td class="time">20:00</td><td class="teams-col"><strong>양키스</strong><span> vs </span><strong>키움</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
           <tr><td>08.28(금)</td><td class="time">20:30</td><td class="teams-col"><strong>키움</strong><span> vs </span><strong>양키스</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
-
           <tr><td>08.29(토)</td><td class="time">15:00</td><td class="teams-col"><strong>양키스</strong><span> vs </span><strong>키움</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
           <tr><td>08.30(일)</td><td class="time">15:00</td><td class="teams-col"><strong>키움</strong><span> vs </span><strong>양키스</strong></td><td><button>리뷰</button></td><td><button>하이라이트</button></td><td>KNL-T</td><td>-</td><td>-</td><td>-</td></tr>
         </tbody>
       </table>
-
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>&copy; <span id="year"></span> KNL 리그. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <div class="site-disclaimer" role="note" id="site-disclaimer">
-    <button class="site-disclaimer__close" aria-label="닫기">&times;</button>
-    본 홈페이지는 로블록스 hcbb knl league 운영을 위해 제작된 비공식 홈페이지입니다. KBO 및 각 프로야구 구단과는 아무런 관련이 없으며, 어떠한 상[...]
-  </div>
-
+  <footer class="site-footer"><div class="container"><p>&copy; <span id="year"></span> KNL 리그. All rights reserved.</p></div></footer>
+  <div class="site-disclaimer" role="note" id="site-disclaimer"><button class="site-disclaimer__close" aria-label="닫기">&times;</button>본 홈페이지는 로블록스 hcbb knl league 운영을 위해 제작된 비공식 홈페이지입니다.</div>
   <script src="script.js"></script>
 </body>
 </html>
