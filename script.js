@@ -188,12 +188,131 @@ function setupDisclaimer(){
   }
 }
 
+// 리스트 / 달력 전환
+function setupScheduleCalendar(){
+  const tabs = document.querySelectorAll('.tabs .tab');
+  const scheduleTable = document.querySelector('.schedule-table');
+  const controls = document.querySelector('.controls');
+  if(!tabs.length || !scheduleTable || !controls) return;
+
+  const listTab = Array.from(tabs).find(t => t.textContent.trim() === '리스트');
+  const calendarTab = Array.from(tabs).find(t => t.textContent.trim() === '달력');
+  if(!listTab || !calendarTab) return;
+
+  let calendar = document.getElementById('schedule-calendar');
+  if(!calendar){
+    calendar = document.createElement('div');
+    calendar.id = 'schedule-calendar';
+    calendar.style.display = 'none';
+    calendar.style.marginTop = '10px';
+    scheduleTable.parentNode.insertBefore(calendar, scheduleTable.nextSibling);
+  }
+
+  const style = document.createElement('style');
+  style.textContent = `
+    #schedule-calendar{width:100%;overflow-x:auto}
+    #schedule-calendar table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}
+    #schedule-calendar th{height:38px;background:#f3f3f3;border:1px solid #ddd;text-align:center;font-weight:700}
+    #schedule-calendar td{height:125px;vertical-align:top;border:1px solid #ddd;padding:6px 7px;background:#fff}
+    #schedule-calendar td.empty{background:#fafafa}
+    #schedule-calendar .day-number{font-size:13px;font-weight:700;text-align:center;margin-bottom:7px}
+    #schedule-calendar .calendar-game{line-height:1.55;margin:2px 0;word-break:keep-all;text-align:left}
+    #schedule-calendar .calendar-game .team{font-weight:500}
+    #schedule-calendar .calendar-game .score{font-weight:700}
+    #schedule-calendar .calendar-game .time{color:#777;font-size:10px;margin-left:2px}
+    #schedule-calendar .calendar-game .ball{font-size:10px;color:#999}
+    @media(max-width:800px){#schedule-calendar td{height:100px;padding:4px;font-size:10px}#schedule-calendar .day-number{font-size:12px}}
+  `;
+  document.head.appendChild(style);
+
+  function parseGames(month){
+    const rows = Array.from(scheduleTable.querySelectorAll('tbody tr[data-month="'+month+'"]'));
+    const gamesByDay = {};
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      const date = cells[0]?.textContent.trim() || '';
+      const m = date.match(/\.(\d+)/);
+      if(!m) return;
+      const day = Number(m[1]);
+      if(month === '09' && day > 23) return;
+      const time = cells[1]?.textContent.trim() || '';
+      const teamsText = cells[2]?.textContent.replace(/\s+/g,' ').trim() || '';
+      let a = '', b = '', scoreA = '', scoreB = '';
+      const scored = teamsText.match(/^(.+?)\s+(\d+)\s+vs\s+(\d+)\s+(.+)$/);
+      const scheduled = teamsText.match(/^(.+?)\s+vs\s+(.+)$/);
+      if(scored){ a=scored[1].trim(); scoreA=scored[2]; scoreB=scored[3]; b=scored[4].trim(); }
+      else if(scheduled){ a=scheduled[1].trim(); b=scheduled[2].trim(); }
+      (gamesByDay[day] ||= []).push({a,b,scoreA,scoreB,time});
+    });
+    return gamesByDay;
+  }
+
+  function renderCalendar(){
+    const monthSelect = controls.querySelector('select[aria-label="월 선택"]');
+    const yearSelect = controls.querySelector('select[aria-label="연도 선택"]');
+    const month = monthSelect ? monthSelect.value : '08';
+    const year = Number(yearSelect ? yearSelect.value : 2026);
+    const monthIndex = Number(month)-1;
+    const maxDay = month === '09' ? 23 : new Date(year, monthIndex+1, 0).getDate();
+    const firstDay = new Date(year, monthIndex, 1).getDay();
+    const gamesByDay = parseGames(month);
+    const dayNames = ['일','월','화','수','목','금','토'];
+
+    let html = '<table><thead><tr>' + dayNames.map(d => '<th>'+d+'</th>').join('') + '</tr></thead><tbody>';
+    let day = 1;
+    while(day <= maxDay){
+      html += '<tr>';
+      for(let col=0; col<7; col++){
+        if((day === 1 && col < firstDay) || day > maxDay){
+          html += '<td class="empty"></td>';
+        } else {
+          html += '<td><div class="day-number">'+day+'</div>';
+          (gamesByDay[day] || []).forEach(g => {
+            let result = '';
+            if(g.scoreA !== '') result = ' <span class="score">'+g.scoreA+' vs '+g.scoreB+'</span>';
+            html += '<div class="calendar-game"><span class="team">'+g.a+'</span>'+result+' <span class="team">'+g.b+'</span><span class="time"> '+g.time+'</span></div>';
+          });
+          html += '</td>';
+          day++;
+        }
+      }
+      html += '</tr>';
+    }
+    html += '</tbody></table>';
+    calendar.innerHTML = html;
+  }
+
+  function showList(){
+    listTab.classList.add('active');
+    calendarTab.classList.remove('active');
+    scheduleTable.style.display = '';
+    calendar.style.display = 'none';
+  }
+
+  function showCalendar(){
+    calendarTab.classList.add('active');
+    listTab.classList.remove('active');
+    scheduleTable.style.display = 'none';
+    calendar.style.display = 'block';
+    renderCalendar();
+  }
+
+  listTab.addEventListener('click', showList);
+  calendarTab.addEventListener('click', showCalendar);
+
+  const monthSelect = controls.querySelector('select[aria-label="월 선택"]');
+  const yearSelect = controls.querySelector('select[aria-label="연도 선택"]');
+  if(monthSelect) monthSelect.addEventListener('change', () => { if(calendar.style.display !== 'none') renderCalendar(); });
+  if(yearSelect) yearSelect.addEventListener('change', () => { if(calendar.style.display !== 'none') renderCalendar(); });
+}
+
 function init(){
   const yEl = document.getElementById('year');
   if(yEl) yEl.textContent = new Date().getFullYear();
 
   formatScheduleTeams();
   setupScheduleMonth();
+  setupScheduleCalendar();
   renderGames();
   renderStandings();
   renderSchedule();
