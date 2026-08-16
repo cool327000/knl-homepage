@@ -131,6 +131,35 @@ function simulateLive(){
   renderGames();
 }
 
+// site disclaimer setup (close button behavior)
+function setupDisclaimer(){
+  try {
+    const disclaimer = document.getElementById('site-disclaimer');
+    const closeBtn = document.querySelector('.site-disclaimer__close');
+    if(!disclaimer || !closeBtn) return;
+
+    // 초기 숨김 상태 확인
+    if (localStorage.getItem('knl_disclaimer_hidden') === '1'){
+      disclaimer.style.display = 'none';
+      return;
+    }
+
+    // 클릭 이벤트 등록
+    closeBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      // 부드럽게 사라지도록
+      disclaimer.style.transition = 'opacity 220ms ease, transform 220ms ease';
+      disclaimer.style.opacity = '0';
+      disclaimer.style.transform = 'translateY(6px)';
+      setTimeout(function(){ disclaimer.style.display = 'none'; }, 240);
+      try { localStorage.setItem('knl_disclaimer_hidden', '1'); } catch(err){}
+    });
+  } catch(err) {
+    // 안전하게 실패 처리
+    console.error('setupDisclaimer error', err);
+  }
+}
+
 // 초기 렌더 + 주기적 업데이트
 function init(){
   // 연도 자동 채우기
@@ -143,8 +172,16 @@ function init(){
   renderNews();
   renderTeams();
 
+  // disclaimer setup
+  setupDisclaimer();
+
   // 10초마다 실시간 시뮬(데모)
   setInterval(simulateLive, 10000);
 }
 
-document.addEventListener('DOMContentLoaded', init);
+// Ensure init runs whether DOMContentLoaded already fired or not
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
