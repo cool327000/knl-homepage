@@ -42,10 +42,19 @@ function formatScheduleTeams(){
 
 function setupScheduleMonth(){
   const select=document.querySelector('.controls select[aria-label="월 선택"]');
+  const yearSelect=document.querySelector('.controls select[aria-label="연도 선택"]');
   const rows=document.querySelectorAll('.schedule-table tbody tr[data-month]');
   if(!select||!rows.length)return;
-  function showMonth(month){rows.forEach(row=>{const dateCell=row.querySelector('td');const day=dateCell?parseInt(dateCell.textContent.match(/\.(\d+)/)?.[1]||'0',10):0;row.style.display=row.dataset.month===month&&!(month==='09'&&day>23)?'':'none';});}
+  function showMonth(month){
+    const year=yearSelect ? Number(yearSelect.value) : 2026;
+    rows.forEach(row=>{
+      const dateCell=row.querySelector('td');
+      const day=dateCell?parseInt(dateCell.textContent.match(/\.(\d+)/)?.[1]||'0',10):0;
+      row.style.display=year===2025 ? 'none' : (row.dataset.month===month&&!(month==='09'&&day>23)?'':'none');
+    });
+  }
   select.value=select.value||'08'; showMonth(select.value); select.addEventListener('change',()=>showMonth(select.value));
+  if(yearSelect)yearSelect.addEventListener('change',()=>showMonth(select.value));
 }
 
 function renderGames(){const el=document.getElementById('games');if(!el)return;el.innerHTML='';games.forEach(g=>{const card=document.createElement('div');card.className='game-card';card.innerHTML=`<div class="teams"><div class="team"><div class="name">${tName(g.away)}</div><div class="score">${g.awayScore}</div></div><div class="status">${g.status}</div><div class="team"><div class="score">${g.homeScore}</div><div class="name">${tName(g.home)}</div></div></div>`;el.appendChild(card);});}
@@ -81,15 +90,10 @@ function setupScheduleCalendar(){
   function renderCalendar(){
     const monthSelect=controls.querySelector('select[aria-label="월 선택"]'),yearSelect=controls.querySelector('select[aria-label="연도 선택"]'),month=monthSelect?monthSelect.value:'08',year=Number(yearSelect?yearSelect.value:2026),monthIndex=Number(month)-1;
     const maxDay=new Date(year,monthIndex+1,0).getDate(),firstDay=new Date(year,monthIndex,1).getDay();
-    // 2025년을 선택하면 달력의 날짜만 표시하고 모든 경기 일정은 숨김
     const gamesByDay=year===2025?{}:parseGames(month),dayNames=['일','월','화','수','목','금','토'];
     let html='<table><thead><tr>'+dayNames.map(d=>'<th>'+d+'</th>').join('')+'</tr></thead><tbody>',day=1;
-    while(day<=maxDay){
-      html+='<tr>';for(let col=0;col<7;col++){
-        if((day===1&&col<firstDay)||day>maxDay)html+='<td class="empty"></td>';
-        else{html+='<td><div class="day-number">'+day+'</div>';(gamesByDay[day]||[]).forEach(g=>{const match=g.scoreA!==''?`${g.a} ${g.scoreA} vs ${g.scoreB} ${g.b}`:`${g.a} : ${g.b}`;html+=`<div class="calendar-game"><span class="match-line">${match}</span><span class="time">${g.time}</span></div>`;});html+='</td>';day++;}
-      }html+='</tr>';
-    }html+='</tbody></table>';calendar.innerHTML=html;
+    while(day<=maxDay){html+='<tr>';for(let col=0;col<7;col++){if((day===1&&col<firstDay)||day>maxDay)html+='<td class="empty"></td>';else{html+='<td><div class="day-number">'+day+'</div>';(gamesByDay[day]||[]).forEach(g=>{const match=g.scoreA!==''?`${g.a} ${g.scoreA} vs ${g.scoreB} ${g.b}`:`${g.a} : ${g.b}`;html+=`<div class="calendar-game"><span class="match-line">${match}</span><span class="time">${g.time}</span></div>`;});html+='</td>';day++;}}html+='</tr>';}
+    html+='</tbody></table>';calendar.innerHTML=html;
   }
   function showList(){listTab.classList.add('active');calendarTab.classList.remove('active');scheduleTable.style.display='';calendar.style.display='none';}
   function showCalendar(){calendarTab.classList.add('active');listTab.classList.remove('active');scheduleTable.style.display='none';calendar.style.display='block';renderCalendar();}
