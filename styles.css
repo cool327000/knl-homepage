@@ -112,6 +112,17 @@ tbody tr:hover{background:rgba(11,93,46,0.03)}
   box-shadow:0 1px 6px rgba(0,0,0,0.06);
   z-index:1200;
 }
+.site-disclaimer__close{
+  position:absolute;
+  top:6px;
+  right:8px;
+  border:none;
+  background:transparent;
+  font-size:16px;
+  line-height:1;
+  cursor:pointer;
+  color:#666;
+}
 
 /* schedule page specific styles */
 .page-wrap{display:flex;gap:24px;padding-top:18px}
@@ -147,4 +158,5 @@ tbody tr:hover{background:rgba(11,93,46,0.03)}
 @media (max-width:640px){
   .main-nav{display:none}
   .header-inner{justify-content:space-between}
+  .site-disclaimer{display:none} /* hide disclaimer on small screens to avoid overlap */
 }
