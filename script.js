@@ -24,15 +24,31 @@ function tName(id) { const t = teams.find(x => x.id === id); return t ? t.name :
 
 function formatScheduleTeams(){
   document.querySelectorAll('.schedule-table tbody td.teams-col').forEach(cell => {
-    const text = cell.textContent.replace(/\s+/g, ' ').trim();
-    if (!text) return;
-    const scored = text.match(/^(.+?)\s+(\d+)\s+vs\s+(\d+)\s+(.+)$/);
-    const scheduled = text.match(/^(.+?)\s+vs\s+(.+)$/);
+    const originalStrong = cell.querySelectorAll('strong');
+    const rawText = cell.textContent.replace(/\s+/g, ' ').trim();
+    if (!rawText) return;
+
+    const scored = rawText.match(/^(.+?)\s+(\d+)\s+vs\s+(\d+)\s+(.+)$/);
+    const scheduled = rawText.match(/^(.+?)\s+vs\s+(.+)$/);
+
     if (scored) {
-      const team1 = scored[1].trim(), score1 = Number(scored[2]), score2 = Number(scored[3]), team2 = scored[4].trim();
+      const team1 = scored[1].trim();
+      const score1 = Number(scored[2]);
+      const score2 = Number(scored[3]);
+      const team2 = scored[4].trim();
+      cell.dataset.team1 = team1;
+      cell.dataset.team2 = team2;
+      cell.dataset.score1 = String(score1);
+      cell.dataset.score2 = String(score2);
       cell.innerHTML = `<strong>${team1}</strong><span class="score ${score1 > score2 ? 'win' : score1 < score2 ? 'lose' : ''}">${score1}</span><span class="vs">vs</span><span class="score ${score2 > score1 ? 'win' : score2 < score1 ? 'lose' : ''}">${score2}</span><strong>${team2}</strong>`;
     } else if (scheduled) {
-      cell.innerHTML = `<strong>${scheduled[1].trim()}</strong><span class="score"></span><span class="vs">vs</span><span class="score"></span><strong>${scheduled[2].trim()}</strong>`;
+      const team1 = scheduled[1].trim();
+      const team2 = scheduled[2].trim();
+      cell.dataset.team1 = team1;
+      cell.dataset.team2 = team2;
+      cell.dataset.score1 = '';
+      cell.dataset.score2 = '';
+      cell.innerHTML = `<strong>${team1}</strong><span class="score"></span><span class="vs">vs</span><span class="score"></span><strong>${team2}</strong>`;
     }
   });
 }
@@ -99,7 +115,7 @@ function setupScheduleCalendar(){
   let calendar=document.getElementById('schedule-calendar');
   if(!calendar){calendar=document.createElement('div');calendar.id='schedule-calendar';calendar.style.display='none';calendar.style.marginTop='10px';scheduleTable.parentNode.insertBefore(calendar,scheduleTable.nextSibling);}
   const style=document.createElement('style');
-  style.textContent=`#schedule-calendar{width:100%;overflow-x:auto}#schedule-calendar table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}#schedule-calendar th{height:38px;background:#f3f3f3;border:1px solid #ddd;text-align:center;font-weight:700}#schedule-calendar td{height:125px;vertical-align:top;border:1px solid #ddd;padding:6px 7px;background:#fff}#schedule-calendar td.empty{background:#fafafa}#schedule-calendar .day-number{font-size:13px;font-weight:700;text-align:center;margin-bottom:7px}#schedule-calendar .calendar-game{line-height:1.55;margin:2px 0;word-break:keep-all;text-align:left}#schedule-calendar .calendar-game .team{font-weight:500}#schedule-calendar .calendar-game .score{font-weight:700}#schedule-calendar .calendar-game .time{color:#777;font-size:10px;margin-left:2px}#schedule-calendar .calendar-game .ball{font-size:10px;color:#999}@media(max-width:800px){#schedule-calendar td{height:100px;padding:4px;font-size:10px}#schedule-calendar .day-number{font-size:12px}}`;
+  style.textContent=`#schedule-calendar{width:100%;overflow-x:auto}#schedule-calendar table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}#schedule-calendar th{height:38px;background:#f3f3f3;border:1px solid #ddd;text-align:center;font-weight:700}#schedule-calendar td{height:125px;vertical-align:top;border:1px solid #ddd;padding:6px 7px;background:#fff}#schedule-calendar td.empty{background:#fafafa}#schedule-calendar .day-number{font-size:13px;font-weight:700;text-align:center;margin-bottom:7px}#schedule-calendar .calendar-game{line-height:1.55;margin:2px 0;word-break:keep-all;text-align:left}#schedule-calendar .calendar-game .team{font-weight:600}#schedule-calendar .calendar-game .score{font-weight:700}#schedule-calendar .calendar-game .time{color:#777;font-size:10px;margin-left:2px}#schedule-calendar .calendar-game .ball{font-size:10px;color:#999}@media(max-width:800px){#schedule-calendar td{height:100px;padding:4px;font-size:10px}#schedule-calendar .day-number{font-size:12px}}`;
   document.head.appendChild(style);
 
   function parseGames(month){
@@ -107,12 +123,18 @@ function setupScheduleCalendar(){
     rows.forEach(row=>{
       const cells=row.querySelectorAll('td'),date=cells[0]?.textContent.trim()||'',m=date.match(/\.(\d+)/);if(!m)return;
       const day=Number(m[1]);
-      // 9월 리스트에는 23일까지, 달력의 24~30일은 빈 날짜로 유지
       if(month==='09'&&day>23)return;
-      const time=cells[1]?.textContent.trim()||'',teamsText=cells[2]?.textContent.replace(/\s+/g,' ').trim()||'';
-      let a='',b='',scoreA='',scoreB='';
-      const scored=teamsText.match(/^(.+?)\s+(\d+)\s+vs\s+(\d+)\s+(.+)$/),scheduled=teamsText.match(/^(.+?)\s+vs\s+(.+)$/);
-      if(scored){a=scored[1].trim();scoreA=scored[2];scoreB=scored[3];b=scored[4].trim();}else if(scheduled){a=scheduled[1].trim();b=scheduled[2].trim();}
+      const time=cells[1]?.textContent.trim()||'';
+      const teamCell=cells[2];
+      if(!teamCell)return;
+
+      // formatScheduleTeams()가 저장한 팀/점수 데이터를 사용해 정확하게 표시
+      const a=teamCell.dataset.team1 || '';
+      const b=teamCell.dataset.team2 || '';
+      const scoreA=teamCell.dataset.score1 || '';
+      const scoreB=teamCell.dataset.score2 || '';
+      if(!a || !b)return;
+
       (gamesByDay[day] ||= []).push({a,b,scoreA,scoreB,time});
     });
     return gamesByDay;
@@ -120,14 +142,20 @@ function setupScheduleCalendar(){
 
   function renderCalendar(){
     const monthSelect=controls.querySelector('select[aria-label="월 선택"]'),yearSelect=controls.querySelector('select[aria-label="연도 선택"]'),month=monthSelect?monthSelect.value:'08',year=Number(yearSelect?yearSelect.value:2026),monthIndex=Number(month)-1;
-    // 9월 달력은 30일까지 표시하고, 24~30일에는 일정을 넣지 않음
     const maxDay=month==='09'?30:new Date(year,monthIndex+1,0).getDate(),firstDay=new Date(year,monthIndex,1).getDay(),gamesByDay=parseGames(month),dayNames=['일','월','화','수','목','금','토'];
     let html='<table><thead><tr>'+dayNames.map(d=>'<th>'+d+'</th>').join('')+'</tr></thead><tbody>',day=1;
     while(day<=maxDay){
       html+='<tr>';
       for(let col=0;col<7;col++){
         if((day===1&&col<firstDay)||day>maxDay) html+='<td class="empty"></td>';
-        else{html+='<td><div class="day-number">'+day+'</div>';(gamesByDay[day]||[]).forEach(g=>{let result=g.scoreA!==''?' <span class="score">'+g.scoreA+' vs '+g.scoreB+'</span>':'';html+='<div class="calendar-game"><span class="team">'+g.a+'</span>'+result+' <span class="team">'+g.b+'</span><span class="time"> '+g.time+'</span></div>';});html+='</td>';day++;}
+        else{
+          html+='<td><div class="day-number">'+day+'</div>';
+          (gamesByDay[day]||[]).forEach(g=>{
+            const result=g.scoreA!=='' ? ' <span class="score">'+g.scoreA+' vs '+g.scoreB+'</span>' : '';
+            html+='<div class="calendar-game"><span class="team">'+g.a+'</span>'+result+' <span class="team">'+g.b+'</span><span class="time">'+g.time+'</span></div>';
+          });
+          html+='</td>';day++;
+        }
       }
       html+='</tr>';
     }
