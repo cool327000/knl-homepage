@@ -28,6 +28,47 @@ const news = [
 // 유틸: 팀 이름 찾기
 function tName(id) { const t = teams.find(x => x.id === id); return t ? t.name : '---'; }
 
+// 일정 경기 칸을 팀 / 점수 / vs / 점수 / 팀으로 분리
+// schedule.html의 기존 내용을 그대로 유지하면서 화면에서만 정렬 구조를 만든다.
+function formatScheduleTeams(){
+  document.querySelectorAll('.schedule-table tbody td.teams-col').forEach(cell => {
+    const text = cell.textContent.replace(/\s+/g, ' ').trim();
+    if (!text) return;
+
+    const scored = text.match(/^(.+?)\s+(\d+)\s+vs\s+(\d+)\s+(.+)$/);
+    const scheduled = text.match(/^(.+?)\s+vs\s+(.+)$/);
+
+    if (scored) {
+      const team1 = scored[1].trim();
+      const score1 = Number(scored[2]);
+      const score2 = Number(scored[3]);
+      const team2 = scored[4].trim();
+
+      const score1Class = score1 > score2 ? 'score win' : score1 < score2 ? 'score lose' : 'score';
+      const score2Class = score2 > score1 ? 'score win' : score2 < score1 ? 'score lose' : 'score';
+
+      cell.innerHTML = `
+        <strong>${team1}</strong>
+        <span class="score ${score1Class.includes('win') ? 'win' : score1Class.includes('lose') ? 'lose' : ''}">${score1}</span>
+        <span class="vs">vs</span>
+        <span class="score ${score2Class.includes('win') ? 'win' : score2Class.includes('lose') ? 'lose' : ''}">${score2}</span>
+        <strong>${team2}</strong>
+      `;
+    } else if (scheduled) {
+      const team1 = scheduled[1].trim();
+      const team2 = scheduled[2].trim();
+
+      cell.innerHTML = `
+        <strong>${team1}</strong>
+        <span class="score"></span>
+        <span class="vs">vs</span>
+        <span class="score"></span>
+        <strong>${team2}</strong>
+      `;
+    }
+  });
+}
+
 // 경기 카드 렌더
 function renderGames(){
   const el = document.getElementById('games');
@@ -165,6 +206,9 @@ function init(){
   // 연도 자동 채우기
   const yEl = document.getElementById('year');
   if(yEl) yEl.textContent = new Date().getFullYear();
+
+  // 일정 경기 칸 정렬
+  formatScheduleTeams();
 
   renderGames();
   renderStandings();
