@@ -66,11 +66,13 @@ function setupScheduleMonth(){
 
   function showMonth(month){
     rows.forEach(row => {
-      row.style.display = row.dataset.month === month ? '' : 'none';
+      const dateCell = row.querySelector('td');
+      const day = dateCell ? parseInt(dateCell.textContent.match(/\.(\d+)/)?.[1] || '0', 10) : 0;
+      const isSeptemberAfter23 = month === '09' && day > 23;
+      row.style.display = row.dataset.month === month && !isSeptemberAfter23 ? '' : 'none';
     });
   }
 
-  // 현재 08월을 기본으로 표시
   select.value = select.value || '08';
   showMonth(select.value);
   select.addEventListener('change', () => showMonth(select.value));
