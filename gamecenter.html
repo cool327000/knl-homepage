@@ -27,7 +27,24 @@
       '2026-08-26':{label:'2026.08.26(수)',games:[{venue:'잠실',weather:'☁',time:'20:00',channel:'SPOTV',status:'경기예정',a:'양키스',b:'키움',pa:'선발 예정',pb:'선발 예정'}]},
       '2026-08-28':{label:'2026.08.28(금)',games:[{venue:'잠실',weather:'☁',time:'20:30',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]},
       '2026-08-29':{label:'2026.08.29(토)',games:[{venue:'잠실',weather:'☁',time:'15:00',channel:'SPOTV',status:'경기예정',a:'양키스',b:'키움',pa:'선발 예정',pb:'선발 예정'}]},
-      '2026-08-30':{label:'2026.08.30(일)',games:[{venue:'잠실',weather:'☁',time:'15:00',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]}
+      '2026-08-30':{label:'2026.08.30(일)',games:[{venue:'잠실',weather:'☁',time:'15:00',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-01':{label:'2026.09.01(화)',games:[{venue:'잠실',weather:'☁',time:'20:00',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-02':{label:'2026.09.02(수)',games:[{venue:'잠실',weather:'☁',time:'20:00',channel:'SPOTV',status:'경기예정',a:'양키스',b:'키움',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-04':{label:'2026.09.04(금)',games:[{venue:'잠실',weather:'☁',time:'20:30',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-05':{label:'2026.09.05(토)',games:[{venue:'잠실',weather:'☁',time:'15:00',channel:'SPOTV',status:'경기예정',a:'양키스',b:'키움',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-06':{label:'2026.09.06(일)',games:[{venue:'잠실',weather:'☁',time:'15:00',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-08':{label:'2026.09.08(화)',games:[{venue:'잠실',weather:'☁',time:'20:00',channel:'SPOTV',status:'경기예정',a:'양키스',b:'키움',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-09':{label:'2026.09.09(수)',games:[{venue:'잠실',weather:'☁',time:'20:00',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-11':{label:'2026.09.11(금)',games:[{venue:'잠실',weather:'☁',time:'20:30',channel:'SPOTV',status:'경기예정',a:'양키스',b:'키움',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-12':{label:'2026.09.12(토)',games:[{venue:'잠실',weather:'☁',time:'15:00',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-13':{label:'2026.09.13(일)',games:[{venue:'잠실',weather:'☁',time:'15:00',channel:'SPOTV',status:'경기예정',a:'양키스',b:'키움',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-15':{label:'2026.09.15(화)',games:[{venue:'잠실',weather:'☁',time:'20:00',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-16':{label:'2026.09.16(수)',games:[{venue:'잠실',weather:'☁',time:'20:00',channel:'SPOTV',status:'경기예정',a:'양키스',b:'키움',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-18':{label:'2026.09.18(금)',games:[{venue:'잠실',weather:'☁',time:'20:30',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-19':{label:'2026.09.19(토)',games:[{venue:'잠실',weather:'☁',time:'15:00',channel:'SPOTV',status:'경기예정',a:'양키스',b:'키움',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-20':{label:'2026.09.20(일)',games:[{venue:'잠실',weather:'☁',time:'15:00',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-22':{label:'2026.09.22(화)',games:[{venue:'잠실',weather:'☁',time:'20:00',channel:'SPOTV',status:'경기예정',a:'양키스',b:'키움',pa:'선발 예정',pb:'선발 예정'}]},
+      '2026-09-23':{label:'2026.09.23(수)',games:[{venue:'잠실',weather:'☁',time:'20:00',channel:'SPOTV',status:'경기예정',a:'키움',b:'양키스',pa:'선발 예정',pb:'선발 예정'}]}
     };
     const dates=Object.keys(gameData);let dateIndex=0;
     function renderGameCenter(){const d=gameData[dates[dateIndex]];document.getElementById('gc-date').textContent=d.label;document.getElementById('gc-games').innerHTML=d.games.map(g=>`<article class="gc-card"><div class="gc-top"><span>${g.venue}</span><span class="gc-weather">${g.weather}</span><span class="gc-time">${g.time}</span></div><div class="gc-channel">${g.channel}</div><span class="gc-status scheduled">${g.status}</span><div class="gc-match"><span>${g.a}</span><span class="gc-vs">VS</span><span>${g.b}</span></div><div class="gc-pitchers"><span>${g.pa}</span><span>${g.pb}</span></div></article>`).join('');}
