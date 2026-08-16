@@ -12,9 +12,8 @@
     .gc-date{font-size:20px;font-weight:800;min-width:190px;text-align:center}
     .gc-arrow{border:0;background:none;font-size:38px;line-height:1;cursor:pointer;padding:0 4px}
     .gc-calendar{margin-left:auto;border:1px solid #aaa;background:#fff;padding:9px 15px;font-size:14px;cursor:pointer}
-    .gc-games{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:10px}
+    .gc-games{display:grid;grid-template-columns:minmax(150px,207px);gap:10px}
     .gc-card{min-height:210px;border:1px solid #ddd;background:#fff;text-align:center;padding:14px 10px;box-sizing:border-box}
-    .gc-card.off{color:#aaa}
     .gc-top{display:flex;justify-content:center;align-items:center;gap:7px;font-size:14px;font-weight:700;margin-bottom:9px}
     .gc-weather{font-size:22px;font-weight:400}
     .gc-time{font-size:17px;font-weight:800}
@@ -26,7 +25,6 @@
     .gc-pitchers{display:flex;justify-content:center;gap:22px;color:#777;font-size:11px}
     .gc-pitchers span::first-letter{color:#00a7df}
     .gc-note{text-align:center;color:#888;font-size:12px;margin-top:14px}
-    @media(max-width:900px){.gc-games{grid-template-columns:repeat(2,minmax(150px,1fr))}.gc-calendar{margin-left:0}.gc-toolbar{flex-wrap:wrap}}
     @media(max-width:520px){.gc-games{grid-template-columns:1fr}.game-center-title{font-size:25px}}
   </style>
 </head>
@@ -71,15 +69,14 @@
 
   <script>
     const gcGames = [
-      {venue:'잠실', weather:'☁', time:'19:00', channel:'SPOTV', status:'경기예정', a:'키움', b:'양키스', pa:'선발 예정', pb:'선발 예정'},
-      null,null,null,null
+      {venue:'잠실', weather:'☁', time:'19:00', channel:'SPOTV', status:'경기예정', a:'키움', b:'양키스', pa:'선발 예정', pb:'선발 예정'}
     ];
     const dates=['2026.08.16(일)','2026.08.17(월)','2026.08.18(화)'];
     let dateIndex=0;
     function renderGameCenter(){
       document.getElementById('gc-date').textContent=dates[dateIndex];
       const wrap=document.getElementById('gc-games');
-      wrap.innerHTML=gcGames.map(g=>g ? `<article class="gc-card"><div class="gc-top"><span>${g.venue}</span><span class="gc-weather">${g.weather}</span><span class="gc-time">${g.time}</span></div><div class="gc-channel">${g.channel}</div><span class="gc-status scheduled">${g.status}</span><div class="gc-match"><span>${g.a}</span><span class="gc-vs">VS</span><span>${g.b}</span></div><div class="gc-pitchers"><span>${g.pa}</span><span>${g.pb}</span></div></article>` : `<article class="gc-card off"><div class="gc-top"><span>경기 없음</span></div><div class="gc-channel">-</div><span class="gc-status">경기없음</span></article>`).join('');
+      wrap.innerHTML=gcGames.map(g=>`<article class="gc-card"><div class="gc-top"><span>${g.venue}</span><span class="gc-weather">${g.weather}</span><span class="gc-time">${g.time}</span></div><div class="gc-channel">${g.channel}</div><span class="gc-status scheduled">${g.status}</span><div class="gc-match"><span>${g.a}</span><span class="gc-vs">VS</span><span>${g.b}</span></div><div class="gc-pitchers"><span>${g.pa}</span><span>${g.pb}</span></div></article>`).join('');
     }
     document.getElementById('prev-day').addEventListener('click',()=>{dateIndex=(dateIndex+dates.length-1)%dates.length;renderGameCenter()});
     document.getElementById('next-day').addEventListener('click',()=>{dateIndex=(dateIndex+1)%dates.length;renderGameCenter()});
