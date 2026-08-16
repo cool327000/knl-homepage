@@ -64,7 +64,7 @@ function setupScheduleCalendar(){
   let calendar=document.getElementById('schedule-calendar');
   if(!calendar){calendar=document.createElement('div');calendar.id='schedule-calendar';calendar.style.display='none';calendar.style.marginTop='10px';scheduleTable.parentNode.insertBefore(calendar,scheduleTable.nextSibling);}
   const style=document.createElement('style');
-  style.textContent=`#schedule-calendar{width:100%;overflow-x:auto}#schedule-calendar table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}#schedule-calendar th{height:38px;background:#f3f3f3;border:1px solid #ddd;text-align:center;font-weight:700}#schedule-calendar td{height:125px;vertical-align:top;border:1px solid #ddd;padding:6px 7px;background:#fff}#schedule-calendar td.empty{background:#fafafa}#schedule-calendar .day-number{font-size:13px;font-weight:700;text-align:center;margin-bottom:7px}#schedule-calendar .calendar-game{line-height:1.55;margin:2px 0;word-break:keep-all;text-align:left;white-space:nowrap}#schedule-calendar .calendar-game .team{font-weight:600}#schedule-calendar .calendar-game .score{font-weight:700}#schedule-calendar .calendar-game .time{display:block;color:#777;font-size:10px;margin-top:2px}#schedule-calendar .calendar-game .match-line{display:block;white-space:nowrap}@media(max-width:800px){#schedule-calendar td{height:100px;padding:4px;font-size:10px}#schedule-calendar .day-number{font-size:12px}}`;
+  style.textContent=`#schedule-calendar{width:100%;overflow-x:auto}#schedule-calendar table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}#schedule-calendar th{height:38px;background:#f3f3f3;border:1px solid #ddd;text-align:center;font-weight:700}#schedule-calendar td{height:125px;vertical-align:top;border:1px solid #ddd;padding:6px 7px;background:#fff}#schedule-calendar td.empty{background:#fafafa}#schedule-calendar .day-number{font-size:13px;font-weight:700;text-align:center;margin-bottom:7px}#schedule-calendar .calendar-game{line-height:1.55;margin:2px 0;word-break:keep-all;text-align:left;white-space:nowrap}#schedule-calendar .calendar-game .team{font-weight:600}#schedule-calendar .calendar-game .score{font-weight:700}#schedule-calendar .calendar-game .time{display:block;color:#777;font-size:10px;margin-top:2px}#schedule-calendar .calendar-game .match-line{display:block;white-space:nowrap;font-weight:800}@media(max-width:800px){#schedule-calendar td{height:100px;padding:4px;font-size:10px}#schedule-calendar .day-number{font-size:12px}}`;
   document.head.appendChild(style);
 
   function parseGames(month){
@@ -80,7 +80,9 @@ function setupScheduleCalendar(){
 
   function renderCalendar(){
     const monthSelect=controls.querySelector('select[aria-label="월 선택"]'),yearSelect=controls.querySelector('select[aria-label="연도 선택"]'),month=monthSelect?monthSelect.value:'08',year=Number(yearSelect?yearSelect.value:2026),monthIndex=Number(month)-1;
-    const maxDay=month==='09'?30:new Date(year,monthIndex+1,0).getDate(),firstDay=new Date(year,monthIndex,1).getDay(),gamesByDay=parseGames(month),dayNames=['일','월','화','수','목','금','토'];
+    const maxDay=new Date(year,monthIndex+1,0).getDate(),firstDay=new Date(year,monthIndex,1).getDay();
+    // 2025년을 선택하면 달력의 날짜만 표시하고 모든 경기 일정은 숨김
+    const gamesByDay=year===2025?{}:parseGames(month),dayNames=['일','월','화','수','목','금','토'];
     let html='<table><thead><tr>'+dayNames.map(d=>'<th>'+d+'</th>').join('')+'</tr></thead><tbody>',day=1;
     while(day<=maxDay){
       html+='<tr>';for(let col=0;col<7;col++){
