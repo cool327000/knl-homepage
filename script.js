@@ -1,21 +1,16 @@
 // KNL 홈페이지용 스크립트
 // 이미지 기준 순위 반영된 standings 포함
 
-// teams 및 standings (이미지 기준)
 const teams = [
   { id: 1, name: 'Yomiuri Giants', abbr: 'YGI' },
   { id: 2, name: 'Kiwoom Heroes',  abbr: 'KHW' }
 ];
 
 const standings = [
-  // Yomiuri Giants: GP 2 W1 L1 D0 PCT .500 R 6 RA 1 RD 5 STREAK L1
   { teamId: 1, gp: 2, w: 1, l: 1, d: 0, r: 6, ra: 1, rd: 5, streak: 'L1' },
-
-  // Kiwoom Heroes: GP 2 W1 L1 D0 PCT .500 R 1 RA 6 RD -5 STREAK W1
   { teamId: 2, gp: 2, w: 1, l: 1, d: 0, r: 1, ra: 6, rd: -5, streak: 'W1' }
 ];
 
-// 기타 더미 데이터 (경기/뉴스 등)
 const games = [
   { id: 101, home: 1, away: 2, homeScore: 3, awayScore: 2, status: '9회말 2아웃' }
 ];
@@ -25,11 +20,8 @@ const news = [
   { id: 2, title: '서울 라이온즈, 외국인 투수 영입', excerpt: '서울이 북미 리그 출신 좌완을 영입했습니다.' }
 ];
 
-// 유틸: 팀 이름 찾기
 function tName(id) { const t = teams.find(x => x.id === id); return t ? t.name : '---'; }
 
-// 일정 경기 칸을 팀 / 점수 / vs / 점수 / 팀으로 분리
-// schedule.html의 기존 내용을 그대로 유지하면서 화면에서만 정렬 구조를 만든다.
 function formatScheduleTeams(){
   document.querySelectorAll('.schedule-table tbody td.teams-col').forEach(cell => {
     const text = cell.textContent.replace(/\s+/g, ' ').trim();
@@ -44,14 +36,11 @@ function formatScheduleTeams(){
       const score2 = Number(scored[3]);
       const team2 = scored[4].trim();
 
-      const score1Class = score1 > score2 ? 'score win' : score1 < score2 ? 'score lose' : 'score';
-      const score2Class = score2 > score1 ? 'score win' : score2 < score1 ? 'score lose' : 'score';
-
       cell.innerHTML = `
         <strong>${team1}</strong>
-        <span class="score ${score1Class.includes('win') ? 'win' : score1Class.includes('lose') ? 'lose' : ''}">${score1}</span>
+        <span class="score ${score1 > score2 ? 'win' : score1 < score2 ? 'lose' : ''}">${score1}</span>
         <span class="vs">vs</span>
-        <span class="score ${score2Class.includes('win') ? 'win' : score2Class.includes('lose') ? 'lose' : ''}">${score2}</span>
+        <span class="score ${score2 > score1 ? 'win' : score2 < score1 ? 'lose' : ''}">${score2}</span>
         <strong>${team2}</strong>
       `;
     } else if (scheduled) {
@@ -69,7 +58,24 @@ function formatScheduleTeams(){
   });
 }
 
-// 경기 카드 렌더
+// 월 선택에 따라 해당 월의 경기만 표시
+function setupScheduleMonth(){
+  const select = document.querySelector('.controls select[aria-label="월 선택"]');
+  const rows = document.querySelectorAll('.schedule-table tbody tr[data-month]');
+  if(!select || !rows.length) return;
+
+  function showMonth(month){
+    rows.forEach(row => {
+      row.style.display = row.dataset.month === month ? '' : 'none';
+    });
+  }
+
+  // 현재 08월을 기본으로 표시
+  select.value = select.value || '08';
+  showMonth(select.value);
+  select.addEventListener('change', () => showMonth(select.value));
+}
+
 function renderGames(){
   const el = document.getElementById('games');
   if(!el) return;
@@ -88,13 +94,10 @@ function renderGames(){
   });
 }
 
-// 순위 렌더 (승률 내림차순, 승률 같으면 RD 내림차순으로 정렬)
 function renderStandings() {
   const tbody = document.querySelector('#standings-table tbody');
   if(!tbody) return;
   tbody.innerHTML = '';
-
-  // 정렬된 복사본 생성
   const sorted = standings.slice().sort((a, b) => {
     const pctA = (a.w + a.l) ? (a.w / (a.w + a.l)) : 0;
     const pctB = (b.w + b.l) ? (b.w / (b.w + b.l)) : 0;
@@ -106,22 +109,14 @@ function renderStandings() {
     const tr = document.createElement('tr');
     const pct = (s.w + s.l) ? (s.w / (s.w + s.l)).toFixed(3).slice(1) : '.000';
     tr.innerHTML = `
-      <td>${idx + 1}</td>
-      <td>${tName(s.teamId)}</td>
-      <td>${s.w}</td>
-      <td>${s.l}</td>
-      <td>${s.d ?? 0}</td>
-      <td>${pct}</td>
-      <td>${s.r ?? '-'}</td>
-      <td>${s.ra ?? '-'}</td>
-      <td>${s.rd ?? '-'}</td>
-      <td>${s.streak ?? '-'}</td>
+      <td>${idx + 1}</td><td>${tName(s.teamId)}</td><td>${s.w}</td><td>${s.l}</td>
+      <td>${s.d ?? 0}</td><td>${pct}</td><td>${s.r ?? '-'}</td><td>${s.ra ?? '-'}</td>
+      <td>${s.rd ?? '-'}</td><td>${s.streak ?? '-'}</td>
     `;
     tbody.appendChild(tr);
   });
 }
 
-// 오늘 일정 렌더
 function renderSchedule(){
   const ul = document.getElementById('today-schedule');
   if(!ul) return;
@@ -133,7 +128,6 @@ function renderSchedule(){
   });
 }
 
-// 뉴스 렌더
 function renderNews(){
   const wrap = document.getElementById('news-carousel');
   if(!wrap) return;
@@ -146,7 +140,6 @@ function renderNews(){
   });
 }
 
-// 팀 카드 렌더
 function renderTeams(){
   const grid = document.getElementById('teams-grid');
   if(!grid) return;
@@ -159,7 +152,6 @@ function renderTeams(){
   });
 }
 
-// 실시간 시뮬레이션: 점수 랜덤 변동 (데모용)
 function simulateLive(){
   games.forEach(g => {
     if(Math.random() < 0.25){
@@ -172,23 +164,17 @@ function simulateLive(){
   renderGames();
 }
 
-// site disclaimer setup (close button behavior)
 function setupDisclaimer(){
   try {
     const disclaimer = document.getElementById('site-disclaimer');
     const closeBtn = document.querySelector('.site-disclaimer__close');
     if(!disclaimer || !closeBtn) return;
-
-    // 초기 숨김 상태 확인
     if (localStorage.getItem('knl_disclaimer_hidden') === '1'){
       disclaimer.style.display = 'none';
       return;
     }
-
-    // 클릭 이벤트 등록
     closeBtn.addEventListener('click', function(e){
       e.stopPropagation();
-      // 부드럽게 사라지도록
       disclaimer.style.transition = 'opacity 220ms ease, transform 220ms ease';
       disclaimer.style.opacity = '0';
       disclaimer.style.transform = 'translateY(6px)';
@@ -196,34 +182,26 @@ function setupDisclaimer(){
       try { localStorage.setItem('knl_disclaimer_hidden', '1'); } catch(err){}
     });
   } catch(err) {
-    // 안전하게 실패 처리
     console.error('setupDisclaimer error', err);
   }
 }
 
-// 초기 렌더 + 주기적 업데이트
 function init(){
-  // 연도 자동 채우기
   const yEl = document.getElementById('year');
   if(yEl) yEl.textContent = new Date().getFullYear();
 
-  // 일정 경기 칸 정렬
   formatScheduleTeams();
-
+  setupScheduleMonth();
   renderGames();
   renderStandings();
   renderSchedule();
   renderNews();
   renderTeams();
-
-  // disclaimer setup
   setupDisclaimer();
 
-  // 10초마다 실시간 시뮬(데모)
   setInterval(simulateLive, 10000);
 }
 
-// Ensure init runs whether DOMContentLoaded already fired or not
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
