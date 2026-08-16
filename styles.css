@@ -104,25 +104,34 @@ tbody tr:hover{background:rgba(11,93,46,0.03)}
   background:rgba(255,255,255,0.98);
   color:#333;
   border:1px solid rgba(0,0,0,0.06);
-  padding:10px 14px;
+  padding:10px 44px 10px 14px; /* add right padding so text doesn't sit under the close button */
   border-radius:8px;
   font-size:12px;
   line-height:1.3;
   max-width:360px;
   box-shadow:0 1px 6px rgba(0,0,0,0.06);
   z-index:1200;
+  overflow:visible; /* allow close button to be clickable and visible */
 }
 .site-disclaimer__close{
   position:absolute;
   top:6px;
   right:8px;
   border:none;
-  background:transparent;
+  background:#fff; /* white circular bg so it's always visible */
+  width:28px;
+  height:28px;
+  border-radius:50%;
   font-size:16px;
-  line-height:1;
+  line-height:28px;
+  text-align:center;
   cursor:pointer;
   color:#666;
+  z-index:1300; /* put above the text */
+  padding:0;
 }
+.site-disclaimer{transition:opacity 220ms ease, transform 220ms ease}
+.site-disclaimer__close:focus{outline:2px solid rgba(11,93,46,0.2);}
 
 /* schedule page specific styles */
 .page-wrap{display:flex;gap:24px;padding-top:18px}
