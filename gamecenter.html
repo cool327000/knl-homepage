@@ -6,7 +6,6 @@
 <title>게임센터 - KNL 리그</title>
 <link rel="stylesheet" href="styles.css">
 <style>
-/* 게임센터 전용 레이아웃 */
 .game-center-page{width:100%;min-width:0}
 .game-center-title{font-size:30px;font-weight:800;margin:0 0 24px}
 .gc-toolbar{width:100%;display:flex;align-items:center;justify-content:center;position:relative;min-height:48px;margin:0 0 18px;box-sizing:border-box}
@@ -14,8 +13,9 @@
 .gc-arrow{position:absolute;top:0;width:48px;height:48px;border:0;background:transparent;font-size:38px;line-height:44px;color:#111;cursor:pointer;padding:0}
 .gc-arrow.prev{left:0}.gc-arrow.next{right:0}
 .gc-calendar{position:absolute;right:0;top:-52px;border:1px solid #aaa;background:#fff;padding:8px 13px;font-size:14px;cursor:pointer}
-.gc-games{display:grid;grid-template-columns:minmax(0,1fr);width:100%;gap:12px}
-.gc-card{width:100%;min-height:205px;box-sizing:border-box;border:1px solid #ddd;background:#fff;text-align:center;padding:16px 12px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.gc-games{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;gap:12px;align-items:start}
+.gc-card{width:100%;min-height:215px;box-sizing:border-box;border:1px solid #ddd;background:#fff;text-align:center;padding:16px 12px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.gc-card:only-child{grid-column:3}
 .gc-card:hover{border-color:#0e3a6b;box-shadow:0 2px 8px rgba(0,0,0,.07)}
 .gc-top{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:16px}
 .gc-weather{font-size:21px}.gc-time{font-size:17px;font-weight:800}
@@ -33,7 +33,7 @@
 .stat-tabs{display:flex;align-items:center;border:1px solid #ccc;padding:8px 12px;margin-bottom:10px;gap:0;overflow-x:auto}.stat-tabs span{font-weight:700;white-space:nowrap;padding:0 11px;border-right:1px solid #aaa}.stat-tabs span:first-child{text-decoration:underline}.stat-tabs span:last-child{border-right:0}
 .player-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}.player-card{border:1px solid #ddd;min-height:245px;padding:18px 20px;text-align:center}.player-rank{text-align:left;font-size:21px;color:#555;margin-bottom:5px}.player-rank.top{color:#e00000}.player-avatar{width:92px;height:92px;border-radius:50%;background:#eee;margin:4px auto 5px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#777}.player-name{font-size:19px;font-weight:800;margin-bottom:12px}.player-line{border-top:1px solid #999;margin:0 0 15px}.player-value{font-size:17px;font-weight:800}.player-sub{font-size:14px;font-weight:700;margin-top:3px}.detail-panel{display:none}.detail-panel.active{display:block}.review-placeholder,.highlight-placeholder{text-align:center;border:1px solid #ddd;padding:45px;color:#777;font-weight:700}
 .gc-preview{display:none;margin-top:28px;border-top:2px solid #eee}.gc-preview.show{display:block}.preview-tabs{display:flex;border-bottom:1px solid #ddd;margin-bottom:20px}.preview-tab{padding:12px 18px;border:1px solid #ddd;border-bottom:0;background:#fff;font-weight:800}.preview-tab.active{border-top:3px solid #0e3a6b;color:#0e3a6b;padding-top:10px}.preview-title{font-size:22px;font-weight:800;margin:12px 0}.preview-subtabs{display:flex;border:1px solid #ccc;padding:9px 12px;gap:18px;font-size:14px;margin-bottom:22px}.preview-subtabs span:first-child{font-weight:800}.preview-section-title{font-size:18px;font-weight:800;border-bottom:1px solid #999;padding:0 0 10px;margin:0}.preview-table{width:100%;border-collapse:collapse}.preview-table th,.preview-table td{padding:12px 9px;border-bottom:1px solid #ddd;text-align:center}.preview-table th{font-weight:800}.preview-table td:first-child,.preview-table th:first-child{text-align:left}.preview-player{font-weight:800}.preview-muted{color:#777;font-size:13px;margin-top:4px}.preview-number{font-weight:800}.preview-highlight{color:#c22;font-weight:800}.preview-hint{text-align:center;color:#888;font-size:12px;margin-top:16px}
-@media(max-width:900px){.gc-calendar{position:static;margin-left:auto;align-self:flex-start}.gc-toolbar{justify-content:space-between;padding-top:52px}.gc-date{margin:0 auto}.gc-arrow{top:52px}.gc-arrow.prev{left:0}.gc-arrow.next{right:0}.gc-games{grid-template-columns:1fr}.player-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.gc-calendar{position:static;margin-left:auto;align-self:flex-start}.gc-toolbar{justify-content:space-between;padding-top:52px}.gc-date{margin:0 auto}.gc-arrow{top:52px}.gc-arrow.prev{left:0}.gc-arrow.next{right:0}.gc-games{grid-template-columns:1fr}.gc-card:only-child{grid-column:auto}.player-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.game-center-title{font-size:27px}.gc-date{font-size:18px}.gc-card{min-height:190px}.player-grid{grid-template-columns:1fr}.detail-tabs{grid-template-columns:repeat(3,1fr)}.gc-match{font-size:17px;gap:8px}}
 </style>
 </head>
