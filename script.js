@@ -53,7 +53,21 @@ function setupScheduleMonth(){
       row.style.display=year===2025 ? 'none' : (row.dataset.month===month&&!(month==='09'&&day>23)?'':'none');
     });
   }
-  select.value=select.value||'08'; showMonth(select.value); select.addEventListener('change',()=>showMonth(select.value));
+  // 기본값은 실제 사용자의 현재 날짜 기준으로 설정한다.
+  // 따라서 2026년 8월에는 08, 9월이 되면 09가 먼저 표시된다.
+  const today=new Date();
+  const currentYear=String(today.getFullYear());
+  const currentMonth=String(today.getMonth()+1).padStart(2,'0');
+  if(Array.from(yearSelect?.options||[]).some(o=>o.value===currentYear||o.textContent===currentYear)){
+    yearSelect.value=currentYear;
+  }
+  if(Array.from(select.options).some(o=>o.value===currentMonth||o.textContent===currentMonth)){
+    select.value=currentMonth;
+  } else if(!select.value){
+    select.value='08';
+  }
+  showMonth(select.value);
+  select.addEventListener('change',()=>showMonth(select.value));
   if(yearSelect)yearSelect.addEventListener('change',()=>showMonth(select.value));
 }
 
