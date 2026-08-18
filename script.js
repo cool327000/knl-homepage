@@ -53,19 +53,11 @@ function setupScheduleMonth(){
       row.style.display=year===2025 ? 'none' : (row.dataset.month===month&&!(month==='09'&&day>23)?'':'none');
     });
   }
-  // 기본값은 실제 사용자의 현재 날짜 기준으로 설정한다.
-  // 따라서 2026년 8월에는 08, 9월이 되면 09가 먼저 표시된다.
   const today=new Date();
   const currentYear=String(today.getFullYear());
   const currentMonth=String(today.getMonth()+1).padStart(2,'0');
-  if(Array.from(yearSelect?.options||[]).some(o=>o.value===currentYear||o.textContent===currentYear)){
-    yearSelect.value=currentYear;
-  }
-  if(Array.from(select.options).some(o=>o.value===currentMonth||o.textContent===currentMonth)){
-    select.value=currentMonth;
-  } else if(!select.value){
-    select.value='08';
-  }
+  if(Array.from(yearSelect?.options||[]).some(o=>o.value===currentYear||o.textContent===currentYear))yearSelect.value=currentYear;
+  if(Array.from(select.options).some(o=>o.value===currentMonth||o.textContent===currentMonth))select.value=currentMonth;else if(!select.value)select.value='08';
   showMonth(select.value);
   select.addEventListener('change',()=>showMonth(select.value));
   if(yearSelect)yearSelect.addEventListener('change',()=>showMonth(select.value));
@@ -89,7 +81,6 @@ function setupScheduleCalendar(){
   const style=document.createElement('style');
   style.textContent=`#schedule-calendar{width:100%;overflow-x:auto}#schedule-calendar table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}#schedule-calendar th{height:38px;background:#f3f3f3;border:1px solid #ddd;text-align:center;font-weight:700}#schedule-calendar td{height:125px;vertical-align:top;border:1px solid #ddd;padding:6px 7px;background:#fff}#schedule-calendar td.empty{background:#fafafa}#schedule-calendar .day-number{font-size:13px;font-weight:700;text-align:center;margin-bottom:7px}#schedule-calendar .calendar-game{line-height:1.55;margin:2px 0;word-break:keep-all;text-align:left;white-space:nowrap}#schedule-calendar .calendar-game .team{font-weight:600}#schedule-calendar .calendar-game .score{font-weight:700}#schedule-calendar .calendar-game .time{display:block;color:#777;font-size:10px;margin-top:2px}#schedule-calendar .calendar-game .match-line{display:block;white-space:nowrap;font-weight:800}@media(max-width:800px){#schedule-calendar td{height:100px;padding:4px;font-size:10px}#schedule-calendar .day-number{font-size:12px}}`;
   document.head.appendChild(style);
-
   function parseGames(month){
     const rows=Array.from(scheduleTable.querySelectorAll('tbody tr[data-month="'+month+'"]')),gamesByDay={};
     rows.forEach(row=>{
@@ -100,13 +91,12 @@ function setupScheduleCalendar(){
       if(!a||!b)return;(gamesByDay[day]||=[]).push({a,b,scoreA,scoreB,time});
     });return gamesByDay;
   }
-
   function renderCalendar(){
     const monthSelect=controls.querySelector('select[aria-label="월 선택"]'),yearSelect=controls.querySelector('select[aria-label="연도 선택"]'),month=monthSelect?monthSelect.value:'08',year=Number(yearSelect?yearSelect.value:2026),monthIndex=Number(month)-1;
     const maxDay=new Date(year,monthIndex+1,0).getDate(),firstDay=new Date(year,monthIndex,1).getDay();
     const gamesByDay=year===2025?{}:parseGames(month),dayNames=['일','월','화','수','목','금','토'];
     let html='<table><thead><tr>'+dayNames.map(d=>'<th>'+d+'</th>').join('')+'</tr></thead><tbody>',day=1;
-    while(day<=maxDay){html+='<tr>';for(let col=0;col<7;col++){if((day===1&&col<firstDay)||day>maxDay)html+='<td class="empty"></td>';else{html+='<td><div class="day-number">'+day+'</div>';(gamesByDay[day]||[]).forEach(g=>{const match=g.scoreA!==''?`${g.a} ${g.scoreA} vs ${g.scoreB} ${g.b}`:`${g.a} : ${g.b}`;html+=`<div class="calendar-game"><span class="match-line">${match}</span><span class="time">${g.time}</span></div>`;});html+='</td>';day++;}}html+='</tr>';}
+    while(day<=maxDay){html+='<tr>';for(let col=0;col<7;col++){if((day===1&&col<firstDay)||day>maxDay)html+='<td class="empty"></td>';else{html+='<td><div class="day-number">'+day+'</div>';(gamesByDay[day]||[]).forEach(g=>{const match=g.scoreA!==''?`${g.a} ${g.scoreA} : ${g.scoreB} ${g.b}`:`${g.a} : ${g.b}`;html+=`<div class="calendar-game"><span class="match-line">${match}</span><span class="time">${g.time}</span></div>`;});html+='</td>';day++;}}html+='</tr>';}
     html+='</tbody></table>';calendar.innerHTML=html;
   }
   function showList(){listTab.classList.add('active');calendarTab.classList.remove('active');scheduleTable.style.display='';calendar.style.display='none';}
