@@ -16,8 +16,8 @@
             <a href="schedule.html" aria-haspopup="true">일정 · 결과</a>
             <ul class="dropdown" role="menu">
               <li role="none"><a role="menuitem" href="schedule.html">경기일정 · 결과</a></li>
-              <li role="none"><a role="menuitem" href="gamecenter.html" onclick="window.location.href='gamecenter.html'; return false;">게임센터</a></li>
-              <li role="none"><a role="menuitem" href="index.html#scoreboard">스코어보드</a></li>
+              <li role="none"><a role="menuitem" href="gamecenter.html">게임센터</a></li>
+              <li role="none"><a role="menuitem" href="scoreboard.html">스코어보드</a></li>
             </ul>
           </li>
           <li><a href="#standings">순위</a></li>
@@ -27,12 +27,8 @@
       </nav>
     </div>
   </header>
-
   <main class="container">
-    <section id="standings" class="standings">
-      <h2>순위</h2>
-      <div class="table-wrap"><table id="standings-table" cellspacing="0"><thead><tr><th>순위</th><th>팀</th><th>승</th><th>패</th><th>무</th><th>승률</th><th>R</th><th>RA</th><th>RD</th><th>STREAK</th></tr></thead><tbody></tbody></table></div>
-    </section>
+    <section id="standings" class="standings"><h2>순위</h2><div class="table-wrap"><table id="standings-table" cellspacing="0"><thead><tr><th>순위</th><th>팀</th><th>승</th><th>패</th><th>무</th><th>승률</th><th>R</th><th>RA</th><th>RD</th><th>STREAK</th></tr></thead><tbody></tbody></table></div></section>
     <section id="schedule" class="schedule"><h2>오늘의 경기</h2><ul id="today-schedule" class="schedule-list"></ul></section>
     <section id="news" class="news"><h2>뉴스</h2><div id="news-carousel" class="carousel"></div></section>
     <section id="teams" class="teams"><h2>팀 소개</h2><div class="teams-grid" id="teams-grid"></div></section>
