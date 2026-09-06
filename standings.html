@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>순위 - KNL 리그</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+.standings-page{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:0 14px 35px rgba(30,48,80,.05)}
+.standings-title{display:flex;justify-content:space-between;align-items:flex-end;padding:4px 0 20px;margin-bottom:18px;border-bottom:1px solid var(--line)}
+.standings-title h1{margin:0;font-size:32px;font-weight:950;letter-spacing:-1.7px}
+.standings-title span{font-size:13px;color:var(--muted)}
+.season-tabs{display:flex;gap:9px;margin-bottom:18px}
+.season-tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 24px;color:#697589;font-weight:900;cursor:pointer}
+.season-tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.standings-card{border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 10px 28px rgba(30,48,80,.045)}
+.standings-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.standings-table th{height:50px;background:#26354b;color:#dbe5f4;font-size:13px;font-weight:900}
+.standings-table td{height:62px;text-align:center;border-bottom:1px solid #edf0f4;font-size:14px;font-weight:700}
+.standings-table tbody tr:hover{background:#f6f9ff}
+.standings-table th:nth-child(1),.standings-table td:nth-child(1){width:8%}
+.standings-table th:nth-child(2),.standings-table td:nth-child(2){width:25%;text-align:left;padding-left:18px}
+.standings-table th:nth-child(3),.standings-table td:nth-child(3){width:9%}
+.standings-table th:nth-child(4),.standings-table td:nth-child(4){width:9%}
+.standings-table th:nth-child(5),.standings-table td:nth-child(5){width:9%}
+.standings-table th:nth-child(6),.standings-table td:nth-child(6){width:12%}
+.standings-table th:nth-child(7),.standings-table td:nth-child(7){width:9%}
+.standings-table th:nth-child(8),.standings-table td:nth-child(8){width:9%}
+.standings-table th:nth-child(9),.standings-table td:nth-child(9){width:10%}
+.rank-number{font-size:18px;font-weight:950;color:#1e3554}
+.rank-team{font-weight:950;color:var(--ink)}
+.rank-team .team-mark{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;margin-right:9px;background:#eef3fb;color:#304a6b;font-size:10px;font-weight:950;vertical-align:middle}
+.rank-team .team-mark.nc{background:#eef1f5}.rank-team .team-mark.kt{background:#edf1f7}
+.win-rate{font-weight:950;color:#214c80}.positive{color:#23805e;font-weight:900}.negative{color:#bd5c51;font-weight:900}
+.standings-note{display:flex;justify-content:space-between;gap:16px;margin-top:13px;color:var(--muted);font-size:12px}
+@media(max-width:700px){.standings-page{padding:17px}.standings-title{align-items:flex-start;gap:8px}.standings-title h1{font-size:27px}.standings-card{overflow-x:auto}.standings-table{min-width:720px}.standings-note{display:block;line-height:1.6}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner"><a class="logo" href="index.html"><span class="league-name">KNL 리그</span></a><nav class="main-nav"><ul><li class="has-dropdown"><a href="schedule.html">일정 · 결과</a><ul class="dropdown"><li><a href="schedule.html">경기일정 · 결과</a></li><li><a href="gamecenter.html">게임센터</a></li><li><a href="scoreboard.html">스코어보드</a></li></ul></li><li><a href="standings.html" class="active">순위</a></li><li><a href="index.html#news">뉴스</a></li><li><a href="index.html#teams">팀</a></li></ul></nav></div></header>
+<main class="container page-wrap">
+<aside class="page-sidebar"><div class="side-title">순위</div><nav class="side-menu"><a href="standings.html" class="active">리그 순위</a><a href="index.html#teams">팀 소개</a></nav></aside>
+<section class="page-content standings-page">
+<div class="standings-title"><h1>순위</h1><span>홈 &gt; 순위</span></div>
+<div class="season-tabs"><button class="season-tab active" data-season="S5">S5</button><button class="season-tab" data-season="S4">S4</button></div>
+<div class="standings-card"><table class="standings-table"><thead><tr><th>순위</th><th>팀</th><th>경기</th><th>승</th><th>패</th><th>승률</th><th>R</th><th>RA</th><th>RD</th></tr></thead><tbody id="standings-body"></tbody></table></div>
+<div class="standings-note"><span id="season-label">S5 · 정규시즌</span><span>승률 → 득실차 순으로 정렬</span></div>
+</section></main>
+<script>
+const data={
+ S5:[
+  {team:'NC',mark:'NC',cls:'nc',g:0,w:0,l:0,pct:'.000',r:0,ra:0,rd:0},
+  {team:'KT',mark:'KT',cls:'kt',g:0,w:0,l:0,pct:'.000',r:0,ra:0,rd:0}
+ ],
+ S4:[
+  {team:'키움',mark:'K',cls:'kt',g:11,w:7,l:4,pct:'.636',r:35,ra:31,rd:4},
+  {team:'양키스',mark:'N',cls:'nc',g:11,w:4,l:7,pct:'.364',r:31,ra:35,rd:-4}
+ ]
+};
+const body=document.getElementById('standings-body'),label=document.getElementById('season-label');
+function render(season){let rows=data[season].slice().sort((a,b)=>b.w/(b.w+b.l||1)-a.w/(a.w+b.l||1)||b.rd-a.rd);body.innerHTML=rows.map((x,i)=>`<tr><td class="rank-number">${i+1}</td><td><span class="rank-team"><span class="team-mark ${x.cls}">${x.mark}</span>${x.team}</span></td><td>${x.g}</td><td class="positive">${x.w}</td><td class="negative">${x.l}</td><td class="win-rate">${x.pct}</td><td>${x.r}</td><td>${x.ra}</td><td class="${x.rd>=0?'positive':'negative'}">${x.rd>0?'+'+x.rd:x.rd}</td></tr>`).join('');label.textContent=season+' · 정규시즌'}
+document.querySelectorAll('.season-tab').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.season-tab').forEach(x=>x.classList.remove('active'));btn.classList.add('active');render(btn.dataset.season)});render('S5');
+</script>
+</body></html>
