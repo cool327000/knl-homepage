@@ -21,16 +21,26 @@
 <div class="section" id="statsSection"><div class="section-top"><div><div class="section-title" id="statsTitle">타격 요약</div><div class="section-sub" id="statsSub">REGULAR SEASON · CAREER TOTALS</div></div><select class="select" id="seasonSelect" aria-label="시즌 선택"><option value="career">통산 기록</option><option value="S4">S4 시즌</option><option value="S3">S3 시즌</option><option value="S2">S2 시즌</option><option value="S1">S1 시즌</option></select></div><div class="stat-grid" id="statGrid"></div></div>
 <div class="section" id="tableSection"><div class="section-top"><div><div class="section-title" id="tableTitle">최근 경기</div><div class="section-sub">GAME-BY-GAME PERFORMANCE</div></div></div><div class="table-wrap"><table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table></div></div></section>
 <section id="leaders" class="panel hidden"><div class="section"><div class="leaderboard-head"><div><h2>KNL Leaderboards</h2><p>시즌 주요 기록을 기준으로 선수를 확인하세요.</p></div><div class="mode-switch"><button class="active" data-leader="AVG">타율 AVG</button><button data-leader="HR">홈런 HR</button><button data-leader="RBI">타점 RBI</button></div></div><div class="table-wrap"><table><thead><tr><th>#</th><th>선수</th><th>팀</th><th class="num">GP</th><th class="num">AVG</th><th class="num">HR</th><th class="num">RBI</th></tr></thead><tbody id="leaderBody"></tbody></table></div></div></section>
-<div id="dataNotice" class="notice">안내: 현재 표시되는 선수 및 기록은 검색 기능을 확인하기 위한 예시 데이터입니다. 실제 KNL 기록에 맞게 아래 코드의 <b>playerData</b> 항목을 수정하면 됩니다.</div>
+<div id="dataNotice" class="notice">안내: 선수 이름과 타석·안타 기록은 제공된 순위표를 바탕으로 등록했습니다. 이미지에 없는 기록은 아직 입력되지 않았습니다.</div>
 </main>
 <footer class="footer"><span>© KNL.STATS · Korea National League</span><span>Unofficial league statistics · Data maintained by league admins</span></footer>
 <script>
 const playerData = [
- {name:"김민수",team:"DOOSAN BEARS",position:"CF · OF",number:7,bat:{GP:18,AB:61,H:25,HR:5,RBI:19,R:21,BB:8,SO:9,SB:6},pitch:{W:2,L:1,ERA:3.42,IP:18.1,SO:21,BB:7,WHIP:1.25},games:[["S4 · 10/06","LG TWINS","2-4","2","1","1","1"],["S4 · 10/03","HANSHIN TIGERS","1-3","1","0","0","0"],["S4 · 09/29","CANBERRA CAVALRY","3-4","2","1","2","0"]]},
- {name:"Alex",team:"LG TWINS",position:"SS · IF",number:12,bat:{GP:16,AB:54,H:20,HR:3,RBI:14,R:17,BB:11,SO:7,SB:4},pitch:{W:1,L:2,ERA:4.10,IP:13.2,SO:15,BB:9,WHIP:1.46},games:[["S4 · 10/06","DOOSAN BEARS","1-2","1","0","0","1"],["S4 · 10/01","CANBERRA CAVALRY","3-4","2","1","1","0"]]},
- {name:"박준호",team:"HANSHIN TIGERS",position:"P · SP",number:31,bat:{GP:12,AB:25,H:6,HR:0,RBI:4,R:3,BB:2,SO:10,SB:0},pitch:{W:4,L:1,ERA:2.18,IP:33,SO:39,BB:8,WHIP:0.97},games:[["S4 · 10/05","DOOSAN BEARS","W 5-2","6.0","3","7","1"],["S4 · 10/02","LG TWINS","W 3-1","7.0","1","9","2"]]},
- {name:"이도윤",team:"CANBERRA CAVALRY",position:"RF · OF",number:24,bat:{GP:20,AB:68,H:27,HR:7,RBI:24,R:20,BB:6,SO:13,SB:3},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[["S4 · 10/04","LG TWINS","4-2","3","2","3","0"],["S4 · 09/30","DOOSAN BEARS","2-3","1","0","1","0"]]},
- {name:"Jamie",team:"DOOSAN BEARS",position:"P · RP",number:45,bat:{GP:8,AB:13,H:2,HR:0,RBI:1,R:2,BB:1,SO:6,SB:0},pitch:{W:3,L:1,ERA:2.75,IP:26.2,SO:32,BB:11,WHIP:1.18},games:[["S4 · 10/06","LG TWINS","W 4-2","2.0","0","3","1"],["S4 · 10/02","HANSHIN TIGERS","L 1-3","1.1","2","1","2"]]}
+{name:"ThePrimeJong",team:"KNL",position:"PLAYER",number:1,bat:{GP:5,AB:4,H:3,HR:0,RBI:0,R:0,BB:1,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"aoyobi",team:"KNL",position:"PLAYER",number:2,bat:{GP:9,AB:9,H:6,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"qurlist",team:"KNL",position:"PLAYER",number:3,bat:{GP:9,AB:9,H:6,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"Rozu_lx",team:"KNL",position:"PLAYER",number:4,bat:{GP:6,AB:3,H:2,HR:0,RBI:0,R:0,BB:3,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"s_ycxln",team:"KNL",position:"PLAYER",number:5,bat:{GP:9,AB:9,H:6,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"akira40fg",team:"KNL",position:"PLAYER",number:6,bat:{GP:5,AB:5,H:3,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"Kevin707952",team:"KNL",position:"PLAYER",number:7,bat:{GP:9,AB:9,H:5,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"jhi8673",team:"KNL",position:"PLAYER",number:8,bat:{GP:2,AB:2,H:1,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"WgoodS1un_n1cegoodz",team:"KNL",position:"PLAYER",number:9,bat:{GP:14,AB:14,H:7,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"heondalordd",team:"KNL",position:"PLAYER",number:10,bat:{GP:5,AB:4,H:2,HR:0,RBI:0,R:0,BB:1,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"gjffhthhf",team:"KNL",position:"PLAYER",number:11,bat:{GP:4,AB:4,H:2,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"astelisy",team:"KNL",position:"PLAYER",number:12,bat:{GP:4,AB:4,H:2,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"NOOB_dghm",team:"KNL",position:"PLAYER",number:13,bat:{GP:2,AB:2,H:1,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"yushanbabo",team:"KNL",position:"PLAYER",number:14,bat:{GP:2,AB:2,H:1,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]},
+{name:"xck018",team:"KNL",position:"PLAYER",number:15,bat:{GP:10,AB:10,H:5,HR:0,RBI:0,R:0,BB:0,SO:0,SB:0},pitch:{W:0,L:0,ERA:0,IP:0,SO:0,BB:0,WHIP:0},games:[]}
 ];
 const $=id=>document.getElementById(id);let selected=null,currentTab="batting",leaderMetric="AVG";
 const battingKeys=[["GP","경기"],["AVG","타율"],["OPS","OPS"],["HR","홈런"],["RBI","타점"],["H","안타"],["OBP","출루율"],["SLG","장타율"],["R","득점"],["BB","볼넷"],["SO","삼진"],["SB","도루"]];
