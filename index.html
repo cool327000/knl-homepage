@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#101820">
 <title>KNL | Korean Network League</title>
-<style>:root{--bg:#f3f1eb;--panel:#fff;--panel2:#f7f5ef;--line:#e6e2d8;--muted:#78838c;--text:#172b3a;--accent:#e45e35;--green:#21835f;--red:#c34d4d;--blue:#3e75a8;--radius:13px}
+<style>#nav [data-page="admin"],#adminShortcut{display:none!important}:root{--bg:#f3f1eb;--panel:#fff;--panel2:#f7f5ef;--line:#e6e2d8;--muted:#78838c;--text:#172b3a;--accent:#e45e35;--green:#21835f;--red:#c34d4d;--blue:#3e75a8;--radius:13px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.55 Inter,Pretendard,"Noto Sans KR",system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{cursor:pointer}::selection{background:#f4c4b3;color:#172b3a}
 .shell{min-height:100vh;display:grid;grid-template-columns:254px minmax(0,1fr)}
 .sidebar{background:#142b3a;color:#f5f3ed;padding:27px 17px 20px;display:flex;flex-direction:column;gap:30px;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:12}
@@ -53,6 +53,9 @@
 </div>
 <div class="modal-backdrop" id="modalBackdrop"><section class="modal"><h3 id="modalTitle">항목 추가</h3><form id="modalForm"><div class="form-grid" id="modalFields"></div><div class="modal-actions"><button type="button" class="btn ghost" id="modalCancel">취소</button><button class="btn primary" type="submit">저장</button></div></form></section></div>
 <div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="knl-auth.js"></script>
 <script>
 const KEY='knl_league_manager_v1';
 const starter={leagueName:'Korean Network League',season:'S1',seasons:['S1','S2','S3','S4','S5'],teams:[],players:[],games:[],news:[],draft:[],updatedAt:null};
