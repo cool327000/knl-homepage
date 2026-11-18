@@ -10,7 +10,7 @@
   }
   function setControls() {
     document.querySelectorAll(adminSelector).forEach(el => {
-      el.style.display = state.isOwner || state.approved ? '' : 'none';
+      el.style.setProperty('display', state.isOwner || state.approved ? '' : 'none', 'important');
     });
     let b = $('#knlAuthButton');
     if (!b) {
@@ -89,6 +89,7 @@
       .update({ status, reviewed_at: new Date().toISOString(), reviewed_by: state.user.id })
       .eq('user_id', uid);
     if (error) return alert('처리 실패: ' + error.message);
+    const oldPanel = $('#knlAccessRequests'); if (oldPanel) oldPanel.remove();
     await refreshAccess();
     if (typeof window.render === 'function') window.render();
   }
@@ -98,7 +99,7 @@
     if (!app || !document.body.contains(app)) return;
     if (page !== 'admin') return;
     let panel = $('#knlAccessRequests');
-    if (panel) panel.remove();
+    if (panel) return;
     panel = document.createElement('section');
     panel.id = 'knlAccessRequests'; panel.className = 'card';
     panel.style.marginTop = '16px';
@@ -134,7 +135,7 @@
   }, true);
   const observer = new MutationObserver(() => {
     setControls();
-    if (state.isOwner && window.page === 'admin') renderRequestPanel();
+    if (state.isOwner && page === 'admin') renderRequestPanel();
   });
   document.addEventListener('DOMContentLoaded', async () => {
     state.configured = configReady();
