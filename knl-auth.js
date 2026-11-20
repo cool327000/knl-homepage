@@ -22,18 +22,18 @@
       host.appendChild(b);
     }
     if (!state.configured) {
-      b.textContent = '로그인 설정 필요'; b.disabled = true;
+      if (b.textContent !== '로그인 설정 필요') b.textContent = '로그인 설정 필요'; b.disabled = true;
       b.title = '운영자가 Supabase와 Discord OAuth 설정을 완료해야 해.';
     } else if (!state.user) {
-      b.textContent = 'Discord 로그인'; b.disabled = false; b.onclick = signIn;
+      if (b.textContent !== 'Discord 로그인') b.textContent = 'Discord 로그인'; b.disabled = false; b.onclick = signIn;
     } else if (state.isOwner || state.approved) {
-      b.textContent = 'Discord 로그아웃'; b.disabled = false; b.onclick = signOut;
+      if (b.textContent !== 'Discord 로그아웃') b.textContent = 'Discord 로그아웃'; b.disabled = false; b.onclick = signOut;
     } else if (state.request?.status === 'pending') {
-      b.textContent = '권한 승인 대기 중'; b.disabled = false; b.onclick = signOut;
+      if (b.textContent !== '권한 승인 대기 중') b.textContent = '권한 승인 대기 중'; b.disabled = false; b.onclick = signOut;
     } else if (state.request?.status === 'rejected') {
-      b.textContent = '요청 거절됨 · 재요청'; b.disabled = false; b.onclick = requestAccess;
+      if (b.textContent !== '요청 거절됨 · 재요청') b.textContent = '요청 거절됨 · 재요청'; b.disabled = false; b.onclick = requestAccess;
     } else {
-      b.textContent = '운영 권한 요청'; b.disabled = false; b.onclick = requestAccess;
+      if (b.textContent !== '운영 권한 요청') b.textContent = '운영 권한 요청'; b.disabled = false; b.onclick = requestAccess;
     }
   }
   async function refreshAccess() {
