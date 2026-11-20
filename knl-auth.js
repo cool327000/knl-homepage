@@ -137,17 +137,43 @@
     setControls();
     if (state.isOwner && page === 'admin') renderRequestPanel();
   });
-  document.addEventListener('DOMContentLoaded', async () => {
+  function loadSupabaseClient() {
+    if (window.supabase?.createClient) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+      script.async = true;
+      const timeout = setTimeout(() => {
+        script.remove();
+        reject(new Error('Supabase library timed out'));
+      }, 10000);
+      script.onload = () => { clearTimeout(timeout); resolve(); };
+      script.onerror = () => { clearTimeout(timeout); reject(new Error('Supabase library failed to load')); };
+      document.head.appendChild(script);
+    });
+  }
+  document.addEventListener('DOMContentLoaded', () => {
     state.configured = configReady();
-    if (!state.configured || !window.supabase?.createClient) { setControls(); return; }
-    state.client = window.supabase.createClient(window.KNL_SUPABASE_URL, window.KNL_SUPABASE_ANON_KEY);
-    observer.observe(document.body, { childList: true, subtree: true });
-    const { data: { session } } = await state.client.auth.getSession();
-    state.user = session?.user || null;
-    await refreshAccess();
-    state.client.auth.onAuthStateChange(async (_event, sessionNow) => {
-      state.user = sessionNow?.user || null;
+    if (!state.configured) { setControls(); return; }
+    // Load the optional authentication library only after the league UI is ready.
+    // A CDN outage must never keep the main page in a browser loading state.
+    loadSupabaseClient().then(async () => {
+      if (!window.supabase?.createClient) throw new Error('Supabase client is unavailable');
+      state.client = window.supabase.createClient(window.KNL_SUPABASE_URL, window.KNL_SUPABASE_ANON_KEY);
+      observer.observe(document.body, { childList: true, subtree: true });
+      const { data: { session } } = await state.client.auth.getSession();
+      state.user = session?.user || null;
       await refreshAccess();
+      state.client.auth.onAuthStateChange(async (_event, sessionNow) => {
+        state.user = sessionNow?.user || null;
+        try { await refreshAccess(); }
+        catch (error) { console.error('KNL access refresh failed:', error); }
+      });
+    }).catch(error => {
+      state.configured = false;
+      state.client = null;
+      setControls();
+      console.warn('KNL authentication is temporarily unavailable; league pages remain usable.', error);
     });
   });
   window.KNLAccess = state;
