@@ -2,6 +2,7 @@
    Requires Supabase Auth (Discord provider) and the SQL schema in supabase-auth.sql. */
 (function () {
   const state = { client: null, user: null, isOwner: false, approved: false, request: null, configured: false, ready: false };
+  let clientPromise = null;
   const adminSelector = '#nav [data-page="admin"], #adminShortcut';
   const $ = (s, root=document) => root.querySelector(s);
   function configReady() {
@@ -55,11 +56,17 @@
     renderRequestPanel();
   }
   async function signIn() {
-    const { error } = await state.client.auth.signInWithOAuth({
-      provider: 'discord',
-      options: { redirectTo: window.location.origin + window.location.pathname }
-    });
-    if (error) alert('Discord 로그인에 실패했어: ' + error.message);
+    try {
+      const client = await ensureClient();
+      const { error } = await client.auth.signInWithOAuth({
+        provider: 'discord',
+        options: { redirectTo: window.location.origin + window.location.pathname }
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error('KNL Discord sign-in failed:', error);
+      alert('Discord 로그인 연결에 실패했어: ' + (error?.message || '잠시 후 다시 시도해줘.'));
+    }
   }
   async function signOut() {
     if (!confirm('Discord 계정에서 로그아웃할까?')) return;
@@ -152,26 +159,40 @@
       document.head.appendChild(script);
     });
   }
+  function ensureClient() {
+    if (state.client) return Promise.resolve(state.client);
+    if (!clientPromise) {
+      clientPromise = loadSupabaseClient().then(() => {
+        if (!window.supabase?.createClient) throw new Error('Supabase client is unavailable');
+        state.client = window.supabase.createClient(window.KNL_SUPABASE_URL, window.KNL_SUPABASE_ANON_KEY);
+        return state.client;
+      }).catch(error => {
+        clientPromise = null;
+        throw error;
+      });
+    }
+    return clientPromise;
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     state.configured = configReady();
-    if (!state.configured) { setControls(); return; }
-    // Load the optional authentication library only after the league UI is ready.
-    // A CDN outage must never keep the main page in a browser loading state.
-    loadSupabaseClient().then(async () => {
-      if (!window.supabase?.createClient) throw new Error('Supabase client is unavailable');
-      state.client = window.supabase.createClient(window.KNL_SUPABASE_URL, window.KNL_SUPABASE_ANON_KEY);
+    // Render an active login button immediately; do not make the button depend
+    // on the Supabase CDN finishing its download.
+    setControls();
+    if (!state.configured) return;
+
+    ensureClient().then(async client => {
       observer.observe(document.body, { childList: true, subtree: true });
-      const { data: { session } } = await state.client.auth.getSession();
+      const { data: { session } } = await client.auth.getSession();
       state.user = session?.user || null;
       await refreshAccess();
-      state.client.auth.onAuthStateChange(async (_event, sessionNow) => {
+      client.auth.onAuthStateChange(async (_event, sessionNow) => {
         state.user = sessionNow?.user || null;
         try { await refreshAccess(); }
         catch (error) { console.error('KNL access refresh failed:', error); }
       });
     }).catch(error => {
-      state.configured = false;
-      state.client = null;
+      // Keep the button enabled so sign-in can retry loading the auth library.
       setControls();
       console.warn('KNL authentication is temporarily unavailable; league pages remain usable.', error);
     });
